@@ -3,7 +3,7 @@
     <div class="card-body px-5">
       <div class="d-flex justify-content-between align-items-center">
         <div>
-          <h3>Tendo IR Corrector</h3>
+          <h3>Loan Formatter</h3>
         </div>
         <div v-if="tooltipContent.length > 0" v-tooltip="{
           content: tooltipContent,
@@ -14,21 +14,23 @@
           <h3>ⓘ</h3>
         </div>
       </div>
-      -- Tool Here --
+      <LoanFormatter />
     </div>
   </div>
 </template>
 
 <script>
+import LoanFormatter from '../LoanFormatter.vue'
+
 export default {
   components: {
-    //
+    LoanFormatter
   },
   data() {
     return {
       tooltip: {
-        old: '',
-        guide: ''
+        old: 'https://docs.google.com/spreadsheets/d/1dxWVEJdvlRuuE0DJX7AAsFAw0f7CrO5X41PwdzLaHZA/edit#gid=30807767',
+        guide: 'https://www.loom.com/share/971bf834128a460e9dc61ee7b3ae0ee6'
       }
     }
   },
