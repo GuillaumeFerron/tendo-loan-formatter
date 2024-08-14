@@ -1,0 +1,224 @@
+//Colors
+
+$white: #FFF !default;
+$black: #000 !default;
+$red: #FD0000 !default;
+$tp-primary: #25A5F1 !default;
+$tp-secondary: #00FFC4 !default;
+$tp-primary-light: #DBF1FE !default;
+$tp-secondary-dark: #29F1C3 !default;
+$grey-100: #FCFCFD !default;
+$grey-200: #F3F6F8 !default;
+$grey-300: #E2E8EC !default;
+$grey-400: #A1B4C2 !default;
+$grey-600: #4D5A64 !default;
+$grey-800: #1F2931 !default;
+$purple-200: #F2EEFF !default;
+$purple-400: #BAA3FA !default;
+$purple-800: #3E1E68 !default;
+$error: #E44C4C !default;
+$error-light: #FFC3C3 !default;
+$google: #DC4B38 !default;
+$facebook: #4267B2 !default;
+$apple: #333333 !default;
+$playstore: #01875F !default;
+
+$button: #25A5F0;
+$light-steel: #B9CADA;
+$light-silver: #D8D8D8;
+$button-transparent: #25A5F020;
+$light-steel-transparent: #B9CADA25;
+$black-coral: #5A5E61;
+$silver-foil: #AEAEAE;
+$turquiose: #26EAB7;
+$cultured: #F5F5F5;
+$amaranth: #DC3545;
+$amaranth-transparent: #DC354520;
+$shalimar: #FFFAB0;
+$light-green: #8CE481;
+$light-green-3: #d9ead3 !default;
+$cinnabar: #E43B3B;
+$mona-lisa: #FF8989;
+$aluminum: #848789;
+$primary: #6E8CD7;
+$white-smoke: #F3F3F3;
+$summer-sky: #3498DB;
+$pattens-blue: #DEE2E6;
+$denim: #1967D2;
+$very-light-grey: #CCC;
+$blue-natural: #0C70AB;
+$soft-red: #D9534F;
+// $bright-turquoise: #42F59B;
+$grey89: #E3E3E3;
+$blue-grey: #c2d1df;
+$dark-grey: #818a91;
+$neutral-grey: #92A9BE;
+$neutral-grey-50: #92A9BE50;
+$neutral-grey-75: #92A9BE75;
+$page-bg: #F5F7FB;
+$rock-blue: #7E99B9;
+$bali-hai: #7F9AB8;
+
+$athens-gray: #F8F9FA;
+$grey-800: #1F2931;
+$cultured: #B9CADA;
+$label-color: #839CB3;
+// $bright-turquoise: #00FFC4;
+$dodger-blue: #25A5F0;
+$red: #FD0000;
+$gainsboro: #D8D8D8;
+
+$tp-primary: #25A5F1 !default;
+$tp-secondary: #00FFC4 !default;
+$black: #000 !default;
+$white: #FFF !default;
+$tp-primary-light: #DBF1FE !default;
+$tp-secondary-dark: #29F1C3 !default;
+$grey-800: #1F2931 !default;
+$grey-600: #4D5A64 !default;
+$grey-400: #A1B4C2 !default;
+$grey-300: #E2E8EC !default;
+$grey-300-25: #E2E8EC3F !default;
+$grey-200: #F3F6F8 !default;
+$grey-100: #FCFCFD !default;
+$purple-400: #BAA3FA !default;
+$purple-200: #F2EEFF !default;
+$purple-800: #3E1E68 !default;
+$error: #E44C4C !default;
+$error-light: #FFC3C3 !default;
+$tp-error: #FF5C75 !default;
+$tp-error-light: #FDC8D0 !default;
+$google: #DC4B38 !default;
+$facebook: #4267B2 !default;
+$apple: #333333 !default;
+$playstore: #01875F !default;
+
+$unpaid-red: #D63A3A !default;
+
+.color-purple-800 {
+  color: $purple-800 !important;
+}
+
+$tp-gradient-1: linear-gradient(233.98deg, #00FFC4 -19.9%, #25A5F1 101.25%);
+$tp-gradient-2: linear-gradient(233.98deg, #00FFC4 -19.9%, #BAA3FA 70.96%);
+$tp-gradient-3: linear-gradient(233.98deg, #BAA3FA -6.65%, #F2EEFF 88.63%);
+$tp-gradient-4: linear-gradient(217.17deg, #E44C4C -16.56%, #FFB5B5 86.37%);
+
+.bg-athens-gray { background-color: $athens-gray; }
+.bg-white { background-color: $white; }
+.bg-black { background-color: $black; }
+.bg-tp-primary { background-color: $tp-primary; }
+.bg-tp-secondary { background-color: $tp-secondary; }
+.bg-tp-primary-light { background-color: $tp-primary-light; }
+.bg-tp-secondary-dark { background-color: $tp-secondary-dark; }
+.bg-grey-100 { background-color: $grey-100; }
+.bg-grey-200 { background-color: $grey-200; }
+.bg-grey-300 { background-color: $grey-300; }
+.bg-grey-400 { background-color: $grey-400; }
+.bg-grey-600 { background-color: $grey-600; }
+.bg-grey-800 { background-color: $grey-800; }
+.bg-purple-200 { background-color: $purple-200; }
+.bg-error { background-color: $error; }
+.bg-error-light { background-color: $error-light; }
+.bg-tp-error { background-color: $tp-error; }
+.bg-tp-error-light { background-color: $tp-error-light; }
+.bg-tp-secondary { background-color: $tp-secondary; }
+.bg-tp-primary-light { background-color: $tp-primary-light; }
+.bg-light-green-3 { background-color: $light-green-3; }
+.bg-grey-300 { background-color: $grey-300; }
+.bg-grey-300-25 { background-color: $grey-300-25; }
+.bg-grey-400 { background-color: $grey-400; }
+
+.border-tp-primary { border-color: $tp-primary; }
+.border-tp-secondary { border-color: $tp-secondary; }
+.border-purple-200 { border-color: $purple-200; }
+.border-grey-400 { border-color: $grey-400; }
+.border-grey-600 { border-color: $grey-600; }
+.border-grey-800 { border-color: $grey-800; }
+.bg-purple-400 { background-color: $purple-400; }
+.bg-purple-800 { background-color: $purple-800; }
+.bg-error { background-color: $error; }
+.bg-error-light { background-color: $error-light; }
+.bg-google { background-color: $google; }
+.bg-facebook { background-color: $facebook; }
+.bg-apple { background-color: $apple; }
+.bg-playstore { background-color: $playstore; }
+
+.bg-tp-gradient-1 { background: $tp-gradient-1; }
+.bg-tp-gradient-2 { background: $tp-gradient-2; }
+.bg-tp-gradient-3 { background: $tp-gradient-3; }
+.bg-tp-gradient-4 { background: $tp-gradient-4; }
+
+.text-white { color: $white; }
+.text-black { color: $black; }
+.text-tp-primary { color: $tp-primary; }
+.text-tp-secondary { color: $tp-secondary; }
+.text-tp-primary-light { color: $tp-primary-light; }
+.text-tp-secondary-dark { color: $tp-secondary-dark; }
+.text-grey-100 { color: $grey-100; }
+.text-grey-200 { color: $grey-200; }
+.text-grey-300 { color: $grey-300; }
+.text-grey-400 { color: $grey-400; }
+.text-grey-600 { color: $grey-600; }
+.text-grey-800 { color: $grey-800; }
+.text-purple-200 { color: $purple-200; }
+.text-purple-400 { color: $purple-400; }
+.text-purple-800 { color: $purple-800; }
+.text-error { color: $error; }
+.text-error-light { color: $error-light; }
+.text-google { color: $google; }
+.text-facebook { color: $facebook; }
+.text-apple { color: $apple; }
+.text-playstore { color: $playstore; }
+
+.border-white { border-color: $white; }
+.border-black { border-color: $black; }
+.border-tp-primary { border-color: $tp-primary; }
+.border-tp-secondary { border-color: $tp-secondary; }
+.border-tp-primary-light { border-color: $tp-primary-light; }
+.border-tp-secondary-dark { border-color: $tp-secondary-dark; }
+.border-grey-100 { border-color: $grey-100; }
+.border-grey-200 { border-color: $grey-200; }
+.border-grey-300 { border-color: $grey-300; }
+.border-grey-400 { border-color: $grey-400; }
+.border-grey-600 { border-color: $grey-600; }
+.border-grey-800 { border-color: $grey-800; }
+.border-purple-200 { border-color: $purple-200; }
+.border-purple-400 { border-color: $purple-400; }
+.border-purple-800 { border-color: $purple-800; }
+.border-error { border-color: $error; }
+.border-error-light { border-color: $error-light; }
+
+// underwriting colors
+$step-error: #FDC8D0;
+$step-warning: #FFEDC0;
+$step-success: #C0FFF1;
+
+$mystic: #E2E8EC;
+$selective-yellow: #FFB904;
+$wild-watermelon: #FF5C75;
+$bright-turquoise: #04FFC5;
+$title-grey: #4D5A64BF;
+$solid-white: #edf0f0;
+$label-gray: #A1B4C2;
+$info-gray: #1F2931;
+$control-bg: #F3F6F8;
+$calendar-highlight: #0DEBCB;
+
+.text-black { color: $black; }
+.text-light-steel { color: $light-steel; }
+.border-unpaid-red { border-color: $unpaid-red; }
+
+.text-tp-primary { color: $tp-primary; }
+.text-white { color: $white; }
+.text-black { color: $black; }
+.text-error { color: $error; }
+.text-grey-200 { color: $grey-200; }
+.text-grey-400 { color: $grey-400; }
+.text-grey-600 { color: $grey-600; }
+.text-grey-800 { color: $grey-800; }
+
+.border-google { border-color: $google; }
+.border-facebook { border-color: $facebook; }
+.border-apple { border-color: $apple; }
+.border-playstore { border-color: $playstore; }
