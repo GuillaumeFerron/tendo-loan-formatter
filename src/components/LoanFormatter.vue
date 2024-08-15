@@ -17,28 +17,19 @@
     <hr class=" mt-4">
     <div class="row mt-3 w-100">
       <h5>Output</h5>
-      <small v-if="(outputMapped || []).length > 1000"><i>Note: Only the first {{ displayLimit }} records (out of
+      <small v-if="(output || []).length > 1000"><i>Note: Only the first {{ displayLimit }} records (out of
           {{
-          (outputMapped || []).length }})
+          (output || []).length }})
           have been displayed.</i></small>
       <div class="my-2 px-0 overflow-scroll output border rounded shadow">
         <table class="table table-striped table-sm table-bordered table-hover">
           <thead>
             <tr class="table-primary">
-              <th scope="col" v-for="header in headers" :key="header">
-                <p class="mb-0">{{ header }}</p>
-                <select :id="`${header}-select`" class="form-control p-0" v-model="data.mapping[header]"
-                  @change="recomputeOutputMapped">
-                  <option value=""></option>
-                  <option v-for="inputHeader in inputHeaders" :value="inputHeader" :key="inputHeader">{{
-                    inputHeader }}
-                  </option>
-                </select>
-              </th>
+              <th scope="col" v-for="header in headers" :key="header">{{ header }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(row, rowIndex) in (outputMapped || []).slice(0, displayLimit)" :key="`row-${rowIndex}`">
+            <tr v-for="(row, rowIndex) in (output || []).slice(0, displayLimit)" :key="`row-${rowIndex}`">
               <td scope="row" v-for="(value, columnIndex) in row" :key="`${columnIndex}-column`">{{ value }}</td>
             </tr>
           </tbody>
@@ -48,7 +39,7 @@
     <hr class="mt-4">
     <div class="row mt-3 w-100">
       <h5>Actions</h5>
-      <small v-if="(outputMapped || []).length > csvLimit"><i>Note: the files downloaded will be split into {{
+      <small v-if="(output || []).length > csvLimit"><i>Note: the files downloaded will be split into {{
           csvLimit
           }} records
           chunks.</i></small>
@@ -56,6 +47,10 @@
         <div class="col-3">
           <p class="py-1"></p>
           <button class="form-control btn btn-primary" @click="download">Download</button>
+        </div>
+        <div class="col-3">
+          <p class="py-1"></p>
+          <button class="form-control btn btn-success" @click="copy">{{ copied ? 'Copied!' : 'Copy' }}</button>
         </div>
         <div class="col-3">
           <p class="py-1"></p>
@@ -67,48 +62,41 @@
 </template>
 
 <script>
-  const CACHE_KEY = 'TENDOPAY_ELS_FORMATTER'
+  const CACHE_KEY = 'TENDOPAY_LOAN_FORMATTER'
   const FORCE_CACHE = true
   const CSV_LIMIT = 10000
   const DISPLAY_LIMIT = 250
   const HEADERS = [
-    'employee_number',
-    'firstname',
-    'middlename',
-    'lastname',
-    'email',
-    'birthdate',
-    'employment_id',
-    'gross_income',
-    'net_income',
-    'department',
-    'job_title',
-    'hired_date',
-    'recommended_interest_rate',
-    'recommended_credit_limit',
-    'phone_number',
-    'special_consideration'
+    'Date Requested',
+    'Note',
+    'User URL',
+    'Reason for Request',
+    'Merchant',
+    'Cancel Trnx ID',
+    'Cancel Trnx Amount'
   ]
+
+  const date = new Date();
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0')
+  const dd = String(date.getDate()).padStart(2, '0')
+  const formattedDate = `${yyyy}_${mm}_${dd}`
 
   export default {
     data() {
       return {
         data: {
-          raw: null,
-          mapping: {}
+          raw: null
         },
         cacheProcessed: false,
         headers: HEADERS,
         displayLimit: DISPLAY_LIMIT,
         csvLimit: CSV_LIMIT,
         output: null,
-        outputMapped: null
+        copied: false
       }
     },
     mounted() {
-      HEADERS.forEach(_ => {
-        this.data.mapping[_] = null
-      })
       this.restoreCache()
       this.recomputeOutput()
     },
@@ -117,17 +105,20 @@
         return (this.data.raw || '')
           .split(/\r?\n|\r|\n/g)[0].split(/\t/g)
       },
-      phoneIndex() {
-        return this.inputHeaders.indexOf(this.data.mapping.phone)
+      userIdIndex() {
+        return this.inputHeaders.indexOf('User_ID')
       },
-      hiredDateIndex() {
-        return this.inputHeaders.indexOf(this.data.mapping['hired_date'])
+      purchaseDateIndex() {
+        return this.inputHeaders.indexOf('Purchased_At')
       },
-      birthdateIndex() {
-        return this.inputHeaders.indexOf(this.data.mapping.birthdate)
+      typeIndex() {
+        return this.inputHeaders.indexOf('Type')
       },
-      emailIndex() {
-        return this.inputHeaders.indexOf(this.data.mapping.email)
+      txnIdIndex() {
+        return this.inputHeaders.indexOf('Purchase_TxnId')
+      },
+      amountIndex() {
+        return this.inputHeaders.indexOf('Purchase_Amount')
       }
     },
     methods: {
@@ -142,35 +133,20 @@
       },
       recomputeOutput() {
         try {
-          this.output = (this.data.raw || '')
+          const formattedSlash = `${mm}/${dd}/${yyyy}`
+          const read = (this.data.raw || '')
             .split(/\r?\n|\r|\n/g)
             .map(_ => _.split(/\t/g))
             .slice(1)
-          this.recomputeOutputMapped()
-        } catch (e) {
-          //
-        }
-      },
-      recomputeOutputMapped() {
-        try {
-          this.outputMapped = this.output.map(_ => {
-            return this.headers.map(__ => {
-              let value = this.findValue(__, _)
-              if (__ == 'phone_number') {
-                value = this.cleanPhone(value)
-              }
-              if (__ == 'email') {
-                value = this.cleanEmail(value)
-              }
-              if (__ == 'hired_date') {
-                value = this.cleanHiredDate(value)
-              }
-              if (__ == 'birthdate') {
-                value = this.cleanBirthdate(value)
-              }
-              return value
-            })
-          })
+          this.output = read.map(_ => [
+            formattedSlash,
+            '',
+            `https://app.tendopay/ph/admin/user/${_[this.userIdIndex]}`,
+            `Xendit Status Failed (${_[this.purchaseDateIndex].slice(0, 100)})`,
+            _[this.typeIndex],
+            _[this.txnIdIndex],
+            _[this.amountIndex]
+          ])
           if (this.cacheProcessed) {
             this.storeCache()
           }
@@ -178,23 +154,10 @@
           //
         }
       },
-      findValue(header, row) {
-        try {
-          const inputHeader = this.data.mapping[header]
-          if (!inputHeader) {
-            return ''
-          }
-          const inputIndex = this.inputHeaders.indexOf(inputHeader)
-          return row[inputIndex]
-        } catch (e) {
-          return ''
-        }
-      },
       storeCache() {
         const obj = {
           data: {
-            ...this.data,
-            mapping: { ...this.data.mapping }
+            ...this.data
           }
         }
         localStorage.setItem(CACHE_KEY, JSON.stringify(obj))
@@ -210,7 +173,7 @@
           }
           if (!FORCE_CACHE) {
             this.clear()
-            console.log(`* ELS FORMATTER: Invalidated cache`)
+            console.log(`* LOAN FORMATTER: Invalidated cache`)
           } else {
             const data = clear.data
             Object.keys(data || {}).forEach(_ => {
@@ -218,7 +181,7 @@
                 this.data[_] = data[_]
               }
             })
-            console.log(`* ELS FORMATTER: Restored cache`)
+            console.log(`* LOAN FORMATTER: Restored cache`)
           }
         }
         this.cacheProcessed = true
@@ -235,16 +198,10 @@
         this.recomputeOutput()
       },
       download() {
-        const date = new Date();
-        const yyyy = date.getFullYear();
-        const mm = String(date.getMonth() + 1).padStart(2, '0')
-        const dd = String(date.getDate()).padStart(2, '0')
-        const formattedDate = `${yyyy}_${mm}_${dd}`
-
         let data = []
         let files = []
-        for (let i = 0; i < Math.ceil(this.outputMapped.length / CSV_LIMIT); i++) {
-          data.push(this.outputMapped.slice(i * CSV_LIMIT, i * CSV_LIMIT + CSV_LIMIT))
+        for (let i = 0; i < Math.ceil(this.output.length / CSV_LIMIT); i++) {
+          data.push(this.output.slice(i * CSV_LIMIT, i * CSV_LIMIT + CSV_LIMIT))
         }
         data.forEach(_ => {
           let csvContent = "data:text/csv;charset=utf-8,"
@@ -261,82 +218,23 @@
 
         files.forEach((_, index) => {
           link.setAttribute('href', _)
-          link.setAttribute('download', `els_${formattedDate}_${index + 1}.csv`)
+          link.setAttribute('download', `loan_${formattedDate}_${index + 1}.csv`)
 
           link.click()
         })
       },
-      cleanPhone(phone) {
-        if (this.phoneIndex == -1) {
-          return phone
-        }
+      copy() {
+        const textarea = document.createElement("textarea");
+        textarea.value = [HEADERS, ...this.output].map(_ => _.join('\t')).join('\n');
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
 
-        let value = phone;
-        try {
-          value = `${value}`.match(/[+0-9]+/g)[0]
-        } catch (e) {
-          //
-        }
-        if (value.indexOf("+63") >= 0) {
-          value = value.replace("+63", "");
-        }
-        if (value.indexOf("+") >= 0) {
-          value = value.replace("+", "");
-        }
-        return value
-      },
-      cleanEmail(email) {
-        if (this.emailIndex == -1) {
-          return email
-        }
-
-        let value = email
-        value = value.split('\n')[0]
-        value = value.split(';')[0]
-        value = value.split(',')[0]
-        value = value.split('\t')[0]
-        return value
-      },
-      cleanHiredDate(date) {
-        if (this.hiredDateIndex == -1) {
-          return date
-        }
-
-        return this.convertDate(this.output.slice(0, 100).map(_ => _[this.hiredDateIndex]), date)
-      },
-      cleanBirthdate(date) {
-        if (this.birthdateIndex == -1) {
-          return date
-        }
-
-        return this.convertDate(this.output.slice(0, 100).map(_ => _[this.birthdateIndex]), date)
-      },
-      convertDate(values, date) {
-        let value = date
-        const separator = `${value}`.includes('/') ? '/' : '-'
-
-        const left = values.map(_ => _.split(separator)[0]).filter(_ => !isNaN(_))
-        const max = left.reduce((acc, _) => acc > _ ? acc : _, 0)
-        var format = max > 31 ? 'YYYY-MM-DD' : max > 12 ? 'DD-MM-YYYY' : 'MM-DD-YYYY'
-
-        const split = value.split(separator)
-        try {
-          switch (format) {
-            case 'DD-MM-YYYY':
-              value = `${split[2]}-${`${split[1]}`.length == 1 ? `0${split[1]}` : split[1]}-${`${split[0]}`.length == 1 ? `0${split[0]}` : split[0]}`
-              break;
-            case 'MM-DD-YYYY':
-              value = `${split[2]}-${`${split[0]}`.length == 1 ? `0${split[0]}` : split[0]}-${`${split[1]}`.length == 1 ? `0${split[1]}` : split[1]}`
-              break;
-            default:
-            case 'YYYY-MM-DD':
-              value = `${split[0]}-${`${split[1]}`.length == 1 ? `0${split[1]}` : split[1]}-${`${split[2]}`.length == 1 ? `0${split[2]}` : split[2]}`
-              break;
-          }
-        } catch (e) {
-          //
-        }
-        return value
+        this.copied = true
+        setTimeout(() => {
+          this.copied = false
+        }, 2000);
       }
     }
   }
