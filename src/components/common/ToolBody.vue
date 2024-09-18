@@ -30,7 +30,7 @@ export default {
     return {
       tooltip: {
         old: 'https://docs.google.com/spreadsheets/d/1dxWVEJdvlRuuE0DJX7AAsFAw0f7CrO5X41PwdzLaHZA/edit#gid=30807767',
-        guide: 'https://www.loom.com/share/971bf834128a460e9dc61ee7b3ae0ee6'
+        guide: 'https://scribehow.com/shared/Using_the_Loan_Formatter__-1DZElN5Q5m1nW96ZFmWoQ'
       }
     }
   },
